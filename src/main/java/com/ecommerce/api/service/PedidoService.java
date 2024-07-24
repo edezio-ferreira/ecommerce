@@ -17,16 +17,6 @@ public class PedidoService {
     private PedidoRepository pedidoRepository;
 
     public Pedido adicionarPedido(Pedido pedido) {
-        Double somaValor = 0.0;
-
-        for(Produto produto : pedido.getProdutos()) {
-            somaValor += produto.getPreco();
-        }
-        if (somaValor>200.0) {
-            pedido.setValorTotal(somaValor-(somaValor*0.1));
-        } else {
-            pedido.setValorTotal(somaValor);
-        }
         return pedidoRepository.save(pedido);
     }
 
@@ -35,7 +25,22 @@ public class PedidoService {
     }
 
     public Optional<Pedido> obterPedido(Long id) {
-        return pedidoRepository.findById(id);
+        Optional<Pedido> pedido = pedidoRepository.findById(id);
+        Double somaValor = 0.0;
+
+        if (pedido.isPresent()) {
+            for(Produto produto : pedido.get().getProdutos()) {
+                somaValor += produto.getPreco();
+            }
+            if (somaValor>200.0) {
+                pedido.get().setValorTotal(somaValor-(somaValor*0.1));
+            } else {
+                pedido.get().setValorTotal(somaValor);
+            }
+            return pedido;
+        } else {
+            return null;
+        }
     }
 
 }
