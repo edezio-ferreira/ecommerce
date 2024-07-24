@@ -34,6 +34,8 @@ public class PedidoService {
             }
             if (somaValor>200.0) {
                 pedido.get().setValorTotal(somaValor-(somaValor*0.1));
+            } else {
+                pedido.get().setValorTotal(somaValor);
             }
             return pedido;
         } else {
