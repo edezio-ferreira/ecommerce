@@ -24,7 +24,7 @@ public class PedidoService {
         return pedidoRepository.findAll();
     }
 
-    public Pedido obterPedido(Long id) {
+    public Optional<Pedido> obterPedido(Long id) {
         Optional<Pedido> pedido = pedidoRepository.findById(id);
         Double somaValor = 0.0;
 
@@ -35,7 +35,7 @@ public class PedidoService {
             if (somaValor>200.0) {
                 pedido.get().setValorTotal(somaValor-(somaValor*0.1));
             }
-            return pedido.get();
+            return pedido;
         } else {
             return null;
         }
